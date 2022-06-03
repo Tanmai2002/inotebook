@@ -10,14 +10,16 @@ function App() {
   return (
     <NoteState>
     <Router>
-    <div className="App">
+    <div>
       <MyNavbar/>
+      <div className='container fluid'>
       <Routes>
         <Route exact path='/' element={<Home/>}/>
         <Route exact path='/about' element={<About/>}/>
         {/* <Route exact path='/' element={<Home/>}/> */}
        
       </Routes>
+      </div>
     </div>
     </Router>
     </NoteState>
