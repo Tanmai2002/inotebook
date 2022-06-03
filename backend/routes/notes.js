@@ -1,111 +1,106 @@
-const express=require('express');
-const fetchUser = require('../middleware/fetchUser');
-const router=express.Router();
-const Notes=require('../models/Note');
+const express = require("express");
+const fetchUser = require("../middleware/fetchUser");
+const router = express.Router();
+const Notes = require("../models/Note");
 
 const { body, validationResult } = require("express-validator");
-const Note = require('../models/Note');
+const Note = require("../models/Note");
 
 //Get Method for all Notes.
-router.get('/allNotes',fetchUser,async (req,res)=>{
-    const notes=await Notes.find({user :req.user.id});
-    res.json(notes);
+router.get("/allNotes", fetchUser, async (req, res) => {
+  const notes = await Notes.find({ user: req.user.id });
+  res.json(notes);
 });
 
 //Add New Note . Login Required
-router.post('/addNote',fetchUser,[
+router.post(
+  "/addNote",
+  fetchUser,
+  [
     body("title", "Atleast 3 character required in Title").isLength({ min: 3 }),
     body("description", "Description should be atleast of length 5").isLength({
       min: 5,
     }),
-],async (req,res)=>{
-    const {title,description,tag}=req.body;
-   try{
-    const error=validationResult(req);
+  ],
+  async (req, res) => {
+    const { title, description, tag } = req.body;
+    try {
+      const error = validationResult(req);
 
-    if(!error.isEmpty()){
-        return res.status(400).json({errors :error.array()});
+      if (!error.isEmpty()) {
+        return res.status(400).json({ errors: error.array() });
+      }
+
+      const note = await Note.create({
+        title: title,
+        description: description,
+        tag: tag,
+        user: req.user.id,
+      });
+
+      res.status(200).json(note);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).send({ InternalError: "Internal Error" });
     }
-
-    const note=await Note.create({
-        title :title,
-        description :description,
-        tag :tag,
-        user : req.user.id
-
-});
-
-    res.status(200).json(note);
-
-   }catch(e){
-    console.error(e.message);
-    res.status(500).send({InternalError:"Internal Error"});
-   }
-});
-
-
-
+  }
+);
 
 //Update Note . Login Required
-router.put('/updateNote/:id',fetchUser,async (req,res)=>{
-    try{
-        
-        const {title,description,tag}=req.body;
-        const newNote={};
-        if(title){newNote.title=title};
-        if(description){newNote.description=description};
-        if(tag){newNote.tag=tag};
-        let curNote=await Note.findById(req.params.id);
-        if(!curNote){
-            return res.status(404).send('Not Found');
-        };
-        if(curNote.user.toString()!== req.user.id){
-            return res.status(401).send("Not allowed");
-        }
+router.put("/updateNote/:id", fetchUser, async (req, res) => {
+  try {
+    const { title, description, tag } = req.body;
+    const newNote = {};
+    if (title) {
+      newNote.title = title;
+    }
+    if (description) {
+      newNote.description = description;
+    }
+    if (tag) {
+      newNote.tag = tag;
+    }
+    let curNote = await Note.findById(req.params.id);
+    if (!curNote) {
+      return res.status(404).send("Not Found");
+    }
+    if (curNote.user.toString() !== req.user.id) {
+      return res.status(401).send("Not allowed");
+    }
 
-        curNote=await Note.findByIdAndUpdate(req.params.id,{$set :newNote},{new :true})
-        // const note=Note.findByIdAndUpdate()
-
-
-    
+    curNote = await Note.findByIdAndUpdate(
+      req.params.id,
+      { $set: newNote },
+      { new: true }
+    );
+    // const note=Note.findByIdAndUpdate()
 
     res.status(200).json(curNote);
-
-   }catch(e){
+  } catch (e) {
     console.error(e.message);
-    res.status(500).send({InternalError:"Internal Error"});
-   }
+    res.status(500).send({ InternalError: "Internal Error" });
+  }
 });
-
-
 
 //Delete  Note. DELETE Method . Login Required
-router.delete('/deleteNote/:id',fetchUser,async (req,res)=>{
-    try{
-        
-        
-        let curNote=await Note.findById(req.params.id);
-        if(!curNote){
-            return res.status(404).send('Not Found');
-        };
-        if(curNote.user.toString()!== req.user.id){
-            return res.status(401).send("Not allowed");
-        }
+router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
+  try {
+    let curNote = await Note.findById(req.params.id);
+    if (!curNote) {
+      return res.status(404).send("Not Found");
+    }
+    if (curNote.user.toString() !== req.user.id) {
+      return res.status(401).send("Not allowed");
+    }
 
-        curNote=await Note.findByIdAndDelete(req.params.id);
-        // const note=Note.findByIdAndUpdate()
+    curNote = await Note.findByIdAndDelete(req.params.id);
+    // const note=Note.findByIdAndUpdate()
 
-
-    
-
-    res.status(200).json({Success:"Successfully deleted",note:curNote});
-
-   }catch(e){
+    res.status(200).json({ Success: "Successfully deleted", note: curNote });
+  } catch (e) {
     console.error(e.message);
-    res.status(500).send({InternalError:"Internal Error"});
-   }
+    res.status(500).send({ InternalError: "Internal Error" });
+  }
 });
 
-
-
-module.exports=router;
+module.exports = router;

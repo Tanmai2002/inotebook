@@ -98,17 +98,15 @@ router.post(
   }
 );
 
-
 //Get login details using Post MEthod.Login using auth Token
-router.post('/getUser',fetchUser,async (req,res)=>{
-  userId=req.user.id;
-  try{
-      
-  const user=await User.findById(userId).select('-password');
-  res.send(user);
-  }catch(e){
+router.post("/getUser", fetchUser, async (req, res) => {
+  userId = req.user.id;
+  try {
+    const user = await User.findById(userId).select("-password");
+    res.send(user);
+  } catch (e) {
     console.error(e.message);
     res.status(500).send({ InternalError: "Server Error" });
   }
-})
+});
 module.exports = router;
