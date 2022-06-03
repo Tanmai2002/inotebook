@@ -1,10 +1,12 @@
 const express = require("express");
 const User = require("../models/User");
-var jwt = require('jsonwebtoken');
+var jwt = require("jsonwebtoken");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-const JWTSecret='tanmaiINote';
+const { render } = require("@testing-library/react");
+const fetchUser = require("../middleware/fetchUser");
+const JWTSecret = "tanmaiINote";
 //POST request to create user . No login required
 router.post(
   "/createUser",
@@ -42,17 +44,71 @@ router.post(
         email: req.body.email,
       });
 
-      //sending AuthToken 
-      const data={
-          user :{
-              id :user.id
-          }
-      }
-      const authToken=jwt.sign(data,JWTSecret);
-      res.json({ authToken : authToken,status: "User successfully created" });
+      //sending AuthToken
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authToken = jwt.sign(data, JWTSecret);
+      res.json({ authToken: authToken, status: "User successfully created" });
     } catch (error) {
       console.log(error);
+      res.status(500).send({ InternalError: "Server Error" });
     }
   }
 );
+//Post Method to get using Login Cred.
+router.post(
+  "/login",
+
+  [
+    body("email", "Invalid email").isEmail(),
+    body("password", "Password should be atleast of length 8").isLength({
+      min: 8,
+    }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    try {
+      //checks if any validation error
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ Error: "Invalid Credentials" });
+      }
+      let user = await User.findOne({ email: req.body.email });
+      // check if email already registered
+      if (!user) {
+        return res.status(400).json({ Error: "Invalid Credentials" });
+      }
+      if (!bcrypt.compare(req.body.password, user.password)) {
+        return res.status(400).json({ Error: "Invalid Credentials" });
+      }
+
+      //sending AuthToken
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authToken = jwt.sign(data, JWTSecret);
+      res.json({ authToken: authToken, status: "User successfully created" });
+    } catch (error) {
+      res.status(500).send({ InternalError: "Server Error" });
+    }
+  }
+);
+
+
+//Get login details using Post MEthod.Login using auth Token
+router.post('/getUser',fetchUser,async (req,res)=>{
+  userId=req.user.id;
+  try{
+      
+  const user=await User.findById(userId).select('-password');
+  res.send(user);
+  }catch(e){
+    console.error(e.message);
+    res.status(500).send({ InternalError: "Server Error" });
+  }
+})
 module.exports = router;
