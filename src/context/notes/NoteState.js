@@ -59,6 +59,16 @@ const NoteState=(props)=>{
         const newNotes=notes.filter((note)=>(id!==note._id));
         setnotes(newNotes);
       }
+      const updatenote=(id,title,description,tag)=>{
+        for(var i=0;i<notes.length;i++){
+          if(notes[i]._id==id){
+            notes[i].title=title;
+            notes[i].description=description;
+            notes[i].tag=tag;
+          }
+        }
+        setnotes()
+      }
 return(
     <NoteContext.Provider value={{notes,addNote,deleteNote}}>
     {props.children}
