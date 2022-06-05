@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { loginApi } from "../context/notes/ApiCalls";
+import { loginApi ,createUserApi} from "../context/notes/ApiCalls";
 import {useNavigate} from 'react-router-dom';
 
 const Login = () => {
@@ -12,6 +12,19 @@ const Login = () => {
   const onSubmit=async (e)=>{
     e.preventDefault();
     if(signup){
+      if(credentials.cpassword!==credentials.password){
+        alert("Password Donot match!!");
+      }
+      const res=await createUserApi(credentials.username,credentials.email,credentials.password);
+      // console.log(res);
+    if(!res.success){
+      alert(res.Error);
+      return;
+    }
+    localStorage.setItem('token',res.authToken);
+    
+    history('/');
+    console.log(res);
     
   }else{
     const res=await loginApi(credentials.email,credentials.password);
@@ -96,6 +109,7 @@ const Login = () => {
             onChange={onChange}
             value={credentials.cpassword}
             name="cpassword"
+            minLength={8}
           />
         </div>}
 

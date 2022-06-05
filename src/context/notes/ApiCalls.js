@@ -66,6 +66,22 @@ async function loginApi(email,password) {
   return response.json();
 
 }
+
+
+async function createUserApi(name,email,password) {
+  const url=`${host}/api/auth/createUser`
+  const response = await fetch(url, {
+    method: 'POST', 
+    headers: {
+      'Content-Type': 'application/json'
+    },
+   body: JSON.stringify({name,email,password}) });
+
+  return response.json();
+
+}
+
+
 // async function postData(url = '', data = {}) {
 //   const response = await fetch(url, {
 //     method: 'POST', 
@@ -78,7 +94,7 @@ async function loginApi(email,password) {
 
 // }
 
-export {deleteNoteApi,updateNoteApi,addNoteApi,loginApi};
+export {deleteNoteApi,updateNoteApi,addNoteApi,loginApi,createUserApi};
 export default getAllNotesApi;
 
 

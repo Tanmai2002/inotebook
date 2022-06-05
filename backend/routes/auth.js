@@ -27,13 +27,13 @@ router.post(
       //checks if any validation error
       if (!errors.isEmpty()) {
         
-        return res.status(400).json({ errors: errors.array() ,success});
+        return res.status(400).json({ Error: errors.array() ,success});
       }
-      let user = await User.findOne({ email: req.body.email });
+      let user = await User.findOne({ Email: req.body.email });
       // check if email already registered
       
       if (user) {
-        return res.status(400).json({ error: "Email already registered." ,success});
+        return res.status(400).json({ Error: "Email already registered." ,success});
       }
 
       //Generation of salt and hash
@@ -61,7 +61,7 @@ router.post(
       console.log(error);
       
       const success=false;
-      res.status(500).send({ InternalError: "Server Error" ,success});
+      res.status(500).send({ Error: "Server Error" ,success});
     }
   }
 );
@@ -104,7 +104,7 @@ router.post(
       success=true;
       res.json({ authToken: authToken, status: "User successfully Login",success });
     } catch (error) {
-      res.status(500).send({ InternalError: "Server Error" });
+      res.status(500).send({ Error: "Server Error" });
     }
   }
 );
@@ -117,7 +117,7 @@ router.post("/getUser", fetchUser, async (req, res) => {
     res.send(user);
   } catch (e) {
     console.error(e.message);
-    res.status(500).send({ InternalError: "Server Error" });
+    res.status(500).send({ Error: "Server Error" });
   }
 });
 module.exports = router;
