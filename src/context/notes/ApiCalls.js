@@ -14,6 +14,7 @@ async function getAllNotesApi(auth) {
   }
 
   async function deleteNoteApi(auth,id) {
+
     const url=`${host}/api/notes/deleteNote/${id}`;
     const response = await fetch(url, {
       method: 'DELETE', 
@@ -25,6 +26,19 @@ async function getAllNotesApi(auth) {
     return response.json();
   
   }
+  async function updateNoteApi(auth,id,title,description,tag) {
+      const url=`${host}/api/notes/updateNote/${id}`
+  const response = await fetch(url, {
+    method: 'PUT', 
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token' : `${auth}`
+    },
+   body: JSON.stringify({title,description,tag}) });
+
+  return response.json();
+
+}
 // async function postData(url = '', data = {}) {
 //   const response = await fetch(url, {
 //     method: 'POST', 
@@ -37,7 +51,7 @@ async function getAllNotesApi(auth) {
 
 // }
 
-export {deleteNoteApi};
+export {deleteNoteApi,updateNoteApi};
 export default getAllNotesApi;
 
 

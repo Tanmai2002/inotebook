@@ -51,6 +51,12 @@ export default function Home() {
         <button type='submit' onClick={handleClick} className="btn btn-primary">
           Submit
         </button>
+
+
+        
+
+
+
       </form>
       </div>
       <Notes/>

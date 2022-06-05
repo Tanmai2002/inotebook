@@ -1,6 +1,6 @@
 import NoteContext from "./noteContext";
 import { useState,useEffect } from "react";
-import getAllNotesApi,{deleteNoteApi} from "./ApiCalls";
+import getAllNotesApi,{deleteNoteApi,updateNoteApi} from "./ApiCalls";
 const NoteState=(props)=>{
     
       const auth='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5OTg1ZTI5MzU2NWY2NmFkNTYxY2JlIn0sImlhdCI6MTY1NDQxNDc2OX0.bOJSaCVdFLFK1emCzmXXgE6DEtfrblNfi4N7Lqw7MMg';
@@ -32,18 +32,16 @@ const NoteState=(props)=>{
         await deleteNoteApi(auth,id);
         getNotes();
       }
-      const updatenote=(id,title,description,tag)=>{
+      const updateNote= async (id,title,description,tag)=>{
         for(var i=0;i<notes.length;i++){
           if(notes[i]._id==id){
-            notes[i].title=title;
-            notes[i].description=description;
-            notes[i].tag=tag;
+            const e=await updateNoteApi(auth,id,title,description,tag)
           }
         }
-        setnotes()
+        getNotes();
       }
 return(
-    <NoteContext.Provider value={{notes,addNote,deleteNote,getNotes}}>
+    <NoteContext.Provider value={{notes,addNote,deleteNote,getNotes,updateNote}}>
     {props.children}
 </NoteContext.Provider>
 )
