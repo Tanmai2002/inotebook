@@ -20,7 +20,7 @@ export default function Home() {
     <div className="container">
         <div className="container">
       <h3>Add a Note</h3>
-      <form>
+      <form  onSubmit={handleClick}>
         <div className="mb-3">
           <label htmlFor="title"  className="form-label">
             Title
@@ -32,6 +32,8 @@ export default function Home() {
             name="title"
             onChange={valueChange}
             aria-describedby="emailHelp"
+            minLength={5}
+            required
           />
           
         </div>
@@ -45,6 +47,8 @@ export default function Home() {
             id="description"
             onChange={valueChange}
             name="description"
+            minLength={10}
+            required
           />
         </div>
        
@@ -60,7 +64,7 @@ export default function Home() {
             name="tag"
           />
         </div>
-        <button type='submit' onClick={handleClick} className="btn btn-primary">
+        <button type='submit'  className="btn btn-primary">
           Submit
         </button>
 

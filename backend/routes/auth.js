@@ -22,14 +22,18 @@ router.post(
   async (req, res) => {
     try {
       const errors = validationResult(req);
+      
+      let success=false;
       //checks if any validation error
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        
+        return res.status(400).json({ errors: errors.array() ,success});
       }
       let user = await User.findOne({ email: req.body.email });
       // check if email already registered
+      
       if (user) {
-        return res.status(400).json({ error: "Email already registered." });
+        return res.status(400).json({ error: "Email already registered." ,success});
       }
 
       //Generation of salt and hash
@@ -51,10 +55,13 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWTSecret);
-      res.json({ authToken: authToken, status: "User successfully created" });
+       success=true;
+      res.json({ authToken: authToken, status: "User successfully created",success });
     } catch (error) {
       console.log(error);
-      res.status(500).send({ InternalError: "Server Error" });
+      
+      const success=false;
+      res.status(500).send({ InternalError: "Server Error" ,success});
     }
   }
 );
@@ -70,18 +77,20 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
+    let success=false;
     try {
       //checks if any validation error
       if (!errors.isEmpty()) {
-        return res.status(400).json({ Error: "Invalid Credentials" });
+        return res.status(400).json({ Error: "Invalid Credentials" ,success});
       }
       let user = await User.findOne({ email: req.body.email });
       // check if email already registered
       if (!user) {
-        return res.status(400).json({ Error: "Invalid Credentials" });
+        return res.status(400).json({ Error: "Invalid Credentials" ,success});
       }
-      if (!bcrypt.compare(req.body.password, user.password)) {
-        return res.status(400).json({ Error: "Invalid Credentials" });
+      const compare=await bcrypt.compare(req.body.password, user.password);
+      if (!compare) {
+        return res.status(400).json({ Error: "Invalid Credentials" ,success});
       }
 
       //sending AuthToken
@@ -91,7 +100,9 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWTSecret);
-      res.json({ authToken: authToken, status: "User successfully created" });
+      
+      success=true;
+      res.json({ authToken: authToken, status: "User successfully Login",success });
     } catch (error) {
       res.status(500).send({ InternalError: "Server Error" });
     }
@@ -100,7 +111,7 @@ router.post(
 
 //Get login details using Post MEthod.Login using auth Token
 router.post("/getUser", fetchUser, async (req, res) => {
-  userId = req.user.id;
+  const userId = req.user.id;
   try {
     const user = await User.findById(userId).select("-password");
     res.send(user);

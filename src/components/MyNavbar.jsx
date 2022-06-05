@@ -21,7 +21,12 @@ export default function MyNavbar() {
         </li>
         
       </ul>
+      
     </div>
+    <span className="navbar-text">
+      
+    <Link to='/login'><button type="button" className="btn btn-dark end">Login</button></Link>
+      </span>
   </div>
 </nav>
   )
