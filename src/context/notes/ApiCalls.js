@@ -39,6 +39,22 @@ async function getAllNotesApi(auth) {
   return response.json();
 
 }
+async function addNoteApi(auth,title,description,tag) {
+    const url=`${host}/api/notes/addNote`
+  const response = await fetch(url, {
+    method: 'POST', 
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token' : `${auth}`
+    },
+   body: JSON.stringify({title,description,tag}) });
+
+  return response.json();
+
+}
+
+
+
 // async function postData(url = '', data = {}) {
 //   const response = await fetch(url, {
 //     method: 'POST', 
@@ -51,7 +67,7 @@ async function getAllNotesApi(auth) {
 
 // }
 
-export {deleteNoteApi,updateNoteApi};
+export {deleteNoteApi,updateNoteApi,addNoteApi};
 export default getAllNotesApi;
 
 

@@ -48,12 +48,24 @@ export default function Home() {
           />
         </div>
        
+        <div className="mb-3">
+          <label htmlFor="description"  className="form-label">
+            Tag
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="tag"
+            onChange={valueChange}
+            name="tag"
+          />
+        </div>
         <button type='submit' onClick={handleClick} className="btn btn-primary">
           Submit
         </button>
 
 
-        
+
 
 
 

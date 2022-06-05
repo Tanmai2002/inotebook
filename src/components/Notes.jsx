@@ -75,10 +75,20 @@ export default function Notes() {
             name="description"
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="description"  className="form-label">
+            Tag
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="tag"
+            value={note.tag}
+            onChange={valueChange}
+            name="tag"
+          />
+        </div>
        
-        <button type='submit' onClick={handleClick} className="btn btn-primary">
-          Submit
-        </button>
 
 
         
@@ -89,7 +99,7 @@ export default function Notes() {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
+        <button type="button" className="btn btn-primary" onClick={handleClick} data-bs-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>

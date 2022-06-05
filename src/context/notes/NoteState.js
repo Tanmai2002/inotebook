@@ -1,6 +1,6 @@
 import NoteContext from "./noteContext";
 import { useState,useEffect } from "react";
-import getAllNotesApi,{deleteNoteApi,updateNoteApi} from "./ApiCalls";
+import getAllNotesApi,{deleteNoteApi,updateNoteApi,addNoteApi} from "./ApiCalls";
 const NoteState=(props)=>{
     
       const auth='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5OTg1ZTI5MzU2NWY2NmFkNTYxY2JlIn0sImlhdCI6MTY1NDQxNDc2OX0.bOJSaCVdFLFK1emCzmXXgE6DEtfrblNfi4N7Lqw7MMg';
@@ -14,17 +14,9 @@ const NoteState=(props)=>{
      
       
       
-      const addNote=(note)=>{
-        const Tnote={
-          "_id": "6299e60084db9450afd40d40",
-          "user": "629985e293565f66ad561cbe",
-          "title": note.title,
-          "description": note.description,
-          "tag": note.tag,
-          "date": "2022-06-03T10:44:16.150Z",
-          "__v": 0
-        }
-        setnotes(notes.concat(Tnote));
+      const addNote=async (note)=>{
+        const t=await addNoteApi(auth,note.title,note.description,note.tag);
+        getNotes();
 
       }
 
