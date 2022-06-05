@@ -1,46 +1,19 @@
 import NoteContext from "./noteContext";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import getAllNotesApi,{deleteNoteApi} from "./ApiCalls";
 const NoteState=(props)=>{
-    const notesIni=[
-        {
-          "_id": "6299b7ff797d72115375c78d",
-          "user": "629985e293565f66ad561cbe",
-          "title": "sample1",
-          "description": "MyNote1",
-          "tag": "test",
-          "date": "2022-06-03T07:27:59.510Z",
-          "__v": 0
-        },
-        {
-          "_id": "6299b800797d72115375c78f",
-          "user": "629985e293565f66ad561cbe",
-          "title": "sample1",
-          "description": "MyNote1",
-          "tag": "test",
-          "date": "2022-06-03T07:28:00.216Z",
-          "__v": 0
-        },
-        {
-          "_id": "6299e5f884db9450afd40d3e",
-          "user": "629985e293565f66ad561cbe",
-          "title": "Amazing Note",
-          "description": "this is note that is to be saved and displayed.",
-          "tag": "XYZ",
-          "date": "2022-06-03T10:44:08.702Z",
-          "__v": 0
-        },
-        {
-          "_id": "6299e60084db9450afd40d40",
-          "user": "629985e293565f66ad561cbe",
-          "title": "Amazing Noterr",
-          "description": "this is note that is to be saved and displayed.",
-          "tag": "General",
-          "date": "2022-06-03T10:44:16.150Z",
-          "__v": 0
-        }
-      ];
-      const [notes, setnotes] = useState(notesIni);
+    
+      const auth='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5OTg1ZTI5MzU2NWY2NmFkNTYxY2JlIn0sImlhdCI6MTY1NDQxNDc2OX0.bOJSaCVdFLFK1emCzmXXgE6DEtfrblNfi4N7Lqw7MMg';
+      
+      const [notes, setnotes] = useState([]);
+      const getNotes=async ()=>{
+        const allNotes=await getAllNotesApi(auth);
+        setnotes(allNotes);
+      };
 
+     
+      
+      
       const addNote=(note)=>{
         const Tnote={
           "_id": "6299e60084db9450afd40d40",
@@ -55,9 +28,9 @@ const NoteState=(props)=>{
 
       }
 
-      const deleteNote=(id)=>{
-        const newNotes=notes.filter((note)=>(id!==note._id));
-        setnotes(newNotes);
+      const deleteNote=async (id)=>{
+        await deleteNoteApi(auth,id);
+        getNotes();
       }
       const updatenote=(id,title,description,tag)=>{
         for(var i=0;i<notes.length;i++){
@@ -70,7 +43,7 @@ const NoteState=(props)=>{
         setnotes()
       }
 return(
-    <NoteContext.Provider value={{notes,addNote,deleteNote}}>
+    <NoteContext.Provider value={{notes,addNote,deleteNote,getNotes}}>
     {props.children}
 </NoteContext.Provider>
 )

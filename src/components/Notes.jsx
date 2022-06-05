@@ -1,10 +1,15 @@
 import React from "react";
-import { useContext } from "react";
+import { useContext,useEffect } from "react";
 import NoteContext from "../context/notes/noteContext";
 
 export default function Notes() {
   const con = useContext(NoteContext);
-  const { notes } = con;
+  
+  const { notes,getNotes } = con;
+  useEffect(() => {
+    getNotes();
+    
+  },[]);
 
   return (
     <div>
