@@ -16,7 +16,7 @@ const Login = () => {
         alert("Password Donot match!!");
       }
       const res=await createUserApi(credentials.username,credentials.email,credentials.password);
-      // console.log(res);
+     
     if(!res.success){
       alert(res.Error);
       return;
@@ -24,7 +24,6 @@ const Login = () => {
     localStorage.setItem('token',res.authToken);
     
     history('/');
-    console.log(res);
     
   }else{
     const res=await loginApi(credentials.email,credentials.password);
@@ -35,7 +34,6 @@ const Login = () => {
     localStorage.setItem('token',res.authToken);
     
     history('/');
-    console.log(res);
   }
 
   }

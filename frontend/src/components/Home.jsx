@@ -8,12 +8,10 @@ export default function Home() {
   const {addNote}=con;
   const [note, setnote] = useState({title:"",description :"",tag :""});
   const valueChange=(e)=>{
-    console.log(e.target.value)
     setnote({...note,[e.target.name]: e.target.value})
   }
   const handleClick=(e)=>{
     e.preventDefault();
-    console.log(note);
     addNote(note);
   }
   return (

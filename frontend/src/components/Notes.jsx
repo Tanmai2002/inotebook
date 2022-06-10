@@ -19,7 +19,7 @@ export default function Notes() {
   }
   useEffect(() => {
     if(localStorage.getItem('token')){
-        console.log(localStorage.getItem('token'));
+      getNotes()
         
     }else{
       navigate('/login');
@@ -29,12 +29,10 @@ export default function Notes() {
   },[]);
 
   const valueChange=(e)=>{
-    console.log(e.target.value)
     setnote({...note,[e.target.name]: e.target.value})
   }
   const handleClick=(e)=>{
     e.preventDefault();
-    console.log(note);
     updateNote(note._id,note.title,note.description,note.tag);
     // addNote(note);
   }
