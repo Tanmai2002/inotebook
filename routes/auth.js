@@ -4,9 +4,8 @@ var jwt = require("jsonwebtoken");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-const { render } = require("@testing-library/react");
 const fetchUser = require("../middleware/fetchUser");
-const JWTSecret = "tanmaiINote";
+const JWTSecret = process.env.JWTSecret;
 //POST request to create user . No login required
 router.post(
   "/createUser",
@@ -25,13 +24,15 @@ router.post(
       
       let success=false;
       //checks if any validation error
+      console.log(JWTSecret);
       if (!errors.isEmpty()) {
         
         return res.status(400).json({ Error: errors.array() ,success});
       }
-      let user = await User.findOne({ Email: req.body.email });
+      console.log(req.body.email)
+      let user = await User.findOne({ email: req.body.email });
       // check if email already registered
-      
+      console.log(user);
       if (user) {
         return res.status(400).json({ Error: "Email already registered." ,success});
       }
@@ -54,7 +55,7 @@ router.post(
           id: user.id,
         },
       };
-      const authToken = jwt.sign(data, JWTSecret);
+      const authToken =  jwt.sign(data, JWTSecret);
        success=true;
       res.json({ authToken: authToken, status: "User successfully created",success });
     } catch (error) {
