@@ -1,13 +1,15 @@
 import React from "react";
 import { useContext,useEffect,useRef,useState} from "react";
+import { useNavigate } from "react-router-dom";
 import NoteContext from "../context/notes/noteContext";
 
 export default function Notes() {
   const con = useContext(NoteContext);
   
-  const { notes,getNotes,updateNote } = con;
+  const { notes,getNotes,updateNote,setAuth } = con;
   const ref = useRef(null);
   const [note, setnote] = useState({title:"",description :"",tag :""});
+  const navigate=useNavigate();
 
   const updateNoteDialog=(note)=>{
       ref.current.click();
@@ -16,7 +18,12 @@ export default function Notes() {
 
   }
   useEffect(() => {
+    if(localStorage.getItem('token')){
+        console.log(localStorage.getItem('token'));
     getNotes();
+    }else{
+      navigate('/login');
+    }
 
     
   },[]);
