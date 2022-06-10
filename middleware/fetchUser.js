@@ -1,4 +1,4 @@
-const JWTSecret = "tanmaiINote";
+const JWTSecret = process.env.JWTSecret;
 let jwt = require("jsonwebtoken");
 const fetchUser = (req, res, next) => {
   //Get user from jwt token and add id to req object
