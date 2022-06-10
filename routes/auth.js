@@ -24,15 +24,12 @@ router.post(
       
       let success=false;
       //checks if any validation error
-      console.log(JWTSecret);
       if (!errors.isEmpty()) {
         
         return res.status(400).json({ Error: errors.array() ,success});
       }
-      console.log(req.body.email)
       let user = await User.findOne({ email: req.body.email });
       // check if email already registered
-      console.log(user);
       if (user) {
         return res.status(400).json({ Error: "Email already registered." ,success});
       }

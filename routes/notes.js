@@ -24,11 +24,12 @@ router.post(
   ],
   async (req, res) => {
     const { title, description, tag } = req.body;
+    let success=false;
     try {
       const error = validationResult(req);
 
       if (!error.isEmpty()) {
-        return res.status(400).json({ errors: error.array() });
+        return res.status(400).json({ errors: error.array(),success });
       }
 
       const note = await Note.create({
@@ -38,16 +39,17 @@ router.post(
         user: req.user.id,
       });
 
-      res.status(200).json(note);
+      res.status(200).json({note,success:true});
     } catch (e) {
       console.error(e.message);
-      res.status(500).send({ InternalError: "Internal Error" });
+      res.status(500).send({ InternalError: "Internal Error" ,success});
     }
   }
 );
 
 //Update Note . Login Required
 router.put("/updateNote/:id", fetchUser, async (req, res) => {
+  let success=false;
   try {
     const { title, description, tag } = req.body;
     const newNote = {};
@@ -62,10 +64,10 @@ router.put("/updateNote/:id", fetchUser, async (req, res) => {
     }
     let curNote = await Note.findById(req.params.id);
     if (!curNote) {
-      return res.status(404).send("Not Found");
+      return res.status(404).json({error:"Not Found",success});
     }
     if (curNote.user.toString() !== req.user.id) {
-      return res.status(401).send("Not allowed");
+      return res.status(401).send({error:"Not allowed",success});
     }
 
     curNote = await Note.findByIdAndUpdate(
@@ -75,7 +77,7 @@ router.put("/updateNote/:id", fetchUser, async (req, res) => {
     );
     // const note=Note.findByIdAndUpdate()
 
-    res.status(200).json(curNote);
+    res.status(200).json({curNote,success});
   } catch (e) {
     console.error(e.message);
     res.status(500).send({ InternalError: "Internal Error" });
