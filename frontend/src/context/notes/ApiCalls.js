@@ -1,4 +1,5 @@
-const host='http://localhost:5000';
+const port=process.env.PORT
+const host=`http://localhost:${port}`;
 
 async function getAllNotesApi(auth) {
     const url=`${host}/api/notes/allNotes`;
