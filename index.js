@@ -13,7 +13,7 @@ const port = 5000|| process.env.PORT;
 app.use(express.json());
 app.use("/api/auth", authT);
 app.use("/api/notes", notesT);
- 
+if(process.env.NODE_ENV=="production"){
   app.use(express.static("frontend/build"));
 
   const path = require("path");
@@ -23,6 +23,7 @@ app.use("/api/notes", notesT);
       res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 
   })
+}
 
 
 
