@@ -8,8 +8,13 @@ const Note = require("../models/Note");
 
 //Get Method for all Notes.
 router.get("/allNotes", fetchUser, async (req, res) => {
+  try{
   const notes = await Notes.find({ user: req.user.id });
   res.json(notes);
+  }catch(e){
+    console.log(e);
+    res.status(401).json({succss:false,error:e.message});
+  }
 });
 
 //Add New Note . Login Required
