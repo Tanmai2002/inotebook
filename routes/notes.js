@@ -10,7 +10,7 @@ const Note = require("../models/Note");
 router.get("/allNotes", fetchUser, async (req, res) => {
   try{
   const notes = await Notes.find({ user: req.user.id });
-  res.json(notes);
+  res.json({notes,success:true});
   }catch(e){
     console.log(e);
     res.status(401).json({succss:false,error:e.message});

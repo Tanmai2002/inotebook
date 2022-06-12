@@ -7,7 +7,11 @@ const NoteState=(props)=>{
       const [notes, setnotes] = useState([]);
       const getNotes=async ()=>{
         const allNotes=await getAllNotesApi(localStorage.getItem('token'));
-        setnotes(allNotes);
+        if(allNotes.success==true){
+          setnotes(allNotes.notes);
+        }else{
+          setnotes([]);
+        }
       };
 
      
