@@ -5,7 +5,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const fetchUser = require("../middleware/fetchUser");
-const JWTSecret = process.env.JWTSecret;
+const JWTSecret = process.env.JWTSECRET;
 //POST request to create user . No login required
 router.post(
   "/createUser",

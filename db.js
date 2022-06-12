@@ -1,10 +1,7 @@
 const mongoose =require('mongoose');
-const mongoURI=process.env.mongodb;
+const mongoURI=process.env.MONGODB;
 
-const connetToMongo =()=>{
-    mongoose.connect(mongoURI,()=>{
-        console.log("Connected to Mongo.")
-    });
-}
-
-module.exports=connetToMongo;
+    mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true },
+        () => {
+          console.log('Connected to MongoDB');
+        });
