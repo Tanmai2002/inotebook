@@ -10,9 +10,10 @@ export default function Home() {
   const valueChange=(e)=>{
     setnote({...note,[e.target.name]: e.target.value})
   }
-  const handleClick=(e)=>{
+  const handleClick=async(e)=>{
     e.preventDefault();
-    addNote(note);
+    let c=await addNote(note);
+    setnote({title:"",description :"",tag :""});
   }
   return (
     <div className="container">
@@ -29,6 +30,7 @@ export default function Home() {
             id="title"
             name="title"
             onChange={valueChange}
+            value={note.title}
             aria-describedby="emailHelp"
             minLength={5}
             required
@@ -44,6 +46,7 @@ export default function Home() {
             className="form-control"
             id="description"
             onChange={valueChange}
+            value={note.description}
             name="description"
             minLength={10}
             required
@@ -58,6 +61,7 @@ export default function Home() {
             type="text"
             className="form-control"
             id="tag"
+            value={note.tag}
             onChange={valueChange}
             name="tag"
           />
