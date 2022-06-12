@@ -9,6 +9,7 @@ const Note = require("../models/Note");
 //Get Method for all Notes.
 router.get("/allNotes", fetchUser, async (req, res) => {
   try{
+    console.log(req.user);
   const notes = await Notes.find({ user: req.user.id });
   res.json({notes,success:true});
   }catch(e){
