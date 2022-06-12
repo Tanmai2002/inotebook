@@ -5,7 +5,7 @@ const authT=require('./routes/auth');
 const notesT=require('./routes/notes');
 
 const app = express();
-const port = 5000|| process.env.PORT;
+const port = process.env.PORT || 5000;
 
 
 
