@@ -8,7 +8,7 @@
     "start": "node app.js",
     "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build"
   },
-  "author": "",
+  "author": "Tanmai Kamat",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
