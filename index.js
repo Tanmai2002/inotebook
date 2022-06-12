@@ -3,11 +3,11 @@ const connetToMongo = require("./db");
 const express = require("express");
 const cors=require('cors');
 const authT=require('./routes/auth');
-const notesT=require('./routes/notes')
+const notesT=require('./routes/notes');
 connetToMongo();
 
 const app = express();
-const port = 5000;
+const port = 5000|| process.env.PORT;
 
 //
 app.use(cors());
