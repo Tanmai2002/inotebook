@@ -6,5 +6,5 @@ A simple React website for storing and maintaining Notes.A simple and full packa
  2. Technical Thappa (Hosting on Heruko)
 
 ## Visit for reference
-[Go to INotebook](http://inotebook-dazz.herukuapp.com/)
+[Go to INotebook](https://inotebook-dazz.herokuapp.com)
 
