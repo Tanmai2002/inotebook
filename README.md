@@ -21,6 +21,7 @@ A notebook for storing text/notes into the server and retrieveing it remotely wh
 ## Demo
 This Project is Deployed at:
 [INotebook React](https://inotebook-dazz.herokuapp.com/login)
+//Heroku has discontinued Free hosting.
 
 ## Acknowledgements
 
