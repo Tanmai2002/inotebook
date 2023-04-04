@@ -1,4 +1,4 @@
-const port=process.env.PORT
+// const port=process.env.PORT
 const host=`https://inotebook-red.vercel.app`;
 
 async function getAllNotesApi(auth) {

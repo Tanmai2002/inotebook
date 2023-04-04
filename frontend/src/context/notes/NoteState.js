@@ -1,5 +1,5 @@
 import NoteContext from "./noteContext";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import getAllNotesApi,{deleteNoteApi,updateNoteApi,addNoteApi} from "./ApiCalls";
 const NoteState=(props)=>{
     
@@ -7,7 +7,7 @@ const NoteState=(props)=>{
       const [notes, setnotes] = useState([]);
       const getNotes=async ()=>{
         const allNotes=await getAllNotesApi(localStorage.getItem('token'));
-        if(allNotes.success==true){
+        if(allNotes.success===true){
           setnotes(allNotes.notes);
         }else{
           setnotes([]);
@@ -18,7 +18,7 @@ const NoteState=(props)=>{
       
       
       const addNote=async (note)=>{
-        const t=await addNoteApi(localStorage.getItem('token'),note.title,note.description,note.tag);
+        await addNoteApi(localStorage.getItem('token'),note.title,note.description,note.tag);
         getNotes();
 
       }
@@ -29,8 +29,8 @@ const NoteState=(props)=>{
       }
       const updateNote= async (id,title,description,tag)=>{
         for(var i=0;i<notes.length;i++){
-          if(notes[i]._id==id){
-            const e=await updateNoteApi(localStorage.getItem('token'),id,title,description,tag)
+          if(notes[i]._id===id){
+            await updateNoteApi(localStorage.getItem('token'),id,title,description,tag)
           }
         }
         getNotes();

@@ -12,7 +12,7 @@ export default function Home() {
   }
   const handleClick=async(e)=>{
     e.preventDefault();
-    let c=await addNote(note);
+    await addNote(note);
     setnote({title:"",description :"",tag :""});
   }
   return (
