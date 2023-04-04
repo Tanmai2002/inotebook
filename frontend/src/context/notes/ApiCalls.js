@@ -1,5 +1,5 @@
 const port=process.env.PORT
-const host=`https://inotebook-dazz.herokuapp.com`;
+const host=`https://inotebook-red.vercel.app`;
 
 async function getAllNotesApi(auth) {
     const url=`${host}/api/notes/allNotes`;
