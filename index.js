@@ -6,10 +6,11 @@ const notesT=require('./routes/notes');
 const cors=require('cors')
 const app = express();
 const port = process.env.PORT || 5000;
-app.use(cors())
+
 
 
 app.use(express.json());
+app.use(cors())
 app.use("/api/auth", authT);
 app.use("/api/notes", notesT);
 
