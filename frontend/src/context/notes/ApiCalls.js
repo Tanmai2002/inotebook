@@ -1,5 +1,5 @@
 // const port=process.env.PORT
-const host=`https://inotebook-red.vercel.app`;
+const host=`http://www.tanmaikamat.tech`;
 
 async function getAllNotesApi(auth) {
     const url=`${host}/api/notes/allNotes`;
